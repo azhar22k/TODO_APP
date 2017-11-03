@@ -4,7 +4,9 @@
   "description": "One can write notes",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "yarn build && yarn dev-server",
+    "build": "./node_modules/.bin/webpack",
+    "dev-server": "node_modules/.bin/http-server -p 3000 public/"
   },
   "repository": {
     "type": "git",
@@ -27,6 +29,8 @@
     "babel-loader": "^7.1.2",
     "babel-preset-env": "^1.6.1",
     "babel-preset-react": "^6.24.1",
+    "eslint": "^4.10.0",
+    "eslint-plugin-react": "^7.4.0",
     "webpack": "^3.8.1"
   }
 }
