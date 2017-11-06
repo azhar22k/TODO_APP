@@ -7,28 +7,30 @@ import { Button } from 'react-bootstrap';
 let AddTodo = ({ dispatch }) => {
 	let input;
 
-	return (
-		<div class='col-md-12'>
-			<form
-				onSubmit={e => {
-					e.preventDefault();
-					if (!input.value.trim()) {
-						return;
-					}
-					dispatch(addTodo(input.value));
-					input.value = '';
-				}}
-			>
-				<input
+	return (<form
+		onSubmit={e => {
+			e.preventDefault();
+			if (!input.value.trim()) {
+				return;
+			}
+			dispatch(addTodo(input.value));
+			input.value = '';
+		}}
+	>
+		<div className='row'>
+			<div className='col-md-10'>
+				<input className="form-control"
 					ref={node => {
 						input = node;
 					}}
 				/>
-				<Button bsStyle="info" type="submit">
-          Add Todo
+			</div>
+			<div className='col-md-2'>
+				<Button bsStyle="info" type="submit">Add Todo
 				</Button>
-			</form>
+			</div>
 		</div>
+	</form>
 	);
 };
 AddTodo = connect()(AddTodo);
