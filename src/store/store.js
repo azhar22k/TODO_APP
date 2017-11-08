@@ -1,10 +1,18 @@
 import {createStore} from 'redux';
 import {Provider} from 'react-redux';
-import React,{Component} from 'react';
+import React from 'react';
 import App from '../App';
-import red from '../reducers/reducer';
+import todoApp from '../reducers/reducer';
+import { loadState, saveState } from './localStorage';
 
-var store = createStore(red);
+const persistedState = loadState();
+const store = createStore(
+	todoApp,
+	persistedState);
+
+store.subscribe(() =>{
+	saveState(store.getState());
+});
 
 export default class Main extends React.Component{
 	render() {

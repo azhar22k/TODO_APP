@@ -36,7 +36,7 @@ export class App extends Component {
 		if (this.currentText.length > 0) {
 			this.props.dispatch(addToDo(this.currentText));
 		} else {
-			alert('please fille both title and task fields');
+			alert('please fill the task field');
 		}
 
 		// for emptying the value in input text
@@ -44,13 +44,11 @@ export class App extends Component {
 		this.currentText = '';
 		this.currentTitle = '';
 	}
-
-	//console.log(" DISPLAY SCREEN", this.props.ll.display);
-	//if (this.props.ll.display) {
 	render() {
 		return (<div className="jumbotron">
 			<div className='container'>
 				<div className='row'>
+					{console.log('PAY ATTANTION',this.props.ll.tasks )}
 					<div className='col-md-4'>
 						{
 							this.props.ll.tasks.map((data, index) => {

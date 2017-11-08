@@ -31,8 +31,8 @@ const updateList = (state = {tasks:[],title:'', text:''}, action) => {
 	return state;
 };
 
-const red = combineReducers({
+const todoApp = combineReducers({
 	list: updateList
 });
 
-export default red;
+export default todoApp;
