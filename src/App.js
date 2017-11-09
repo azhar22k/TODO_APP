@@ -86,11 +86,12 @@ export class App extends Component {
 		this.currentText = '';
 		this.currentTitle = '';
 	}
+
+	/* eslint-disable no-console */
 	render() {
 		return (<div className='jumbotron'>
 			<div className='container'>
 				<div className='row'>
-					/* eslint-disable no-console */
 					{console.log('TASK STATUS',this.props.ll.tasks )}
 					<div className='col-md-3'>
 						{
