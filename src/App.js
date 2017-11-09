@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars*/
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import {
@@ -89,6 +90,7 @@ export class App extends Component {
 		return (<div className='jumbotron'>
 			<div className='container'>
 				<div className='row'>
+					/* eslint-disable no-console */
 					{console.log('TASK STATUS',this.props.ll.tasks )}
 					<div className='col-md-3'>
 						{
@@ -144,7 +146,8 @@ export class App extends Component {
 							{(() => {
 								if (this.props.ll.btn === 'Update Task') {
 									return (<div className='col-md-2'>
-										<Button bsStyle='danger' className='button' onClick={this.cancelUpdateTask.bind(this)}>Cancel</Button>
+										<Button bsStyle='danger' className='button'
+											onClick={this.cancelUpdateTask.bind(this)}>Cancel</Button>
 									</div>);
 								}
 							})()}
