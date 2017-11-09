@@ -1,6 +1,11 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
-import {addToDo, deleteTaskList, updateButtonName, updateTaskList} from './actions/action';
+import {
+	addToDo,
+	deleteTaskList,
+	updateButtonName,
+	updateTaskList,
+	cancelAction} from './actions/action';
 import ReactDOM from 'react-dom';
 import {
 	Button,
@@ -41,16 +46,29 @@ export class App extends Component {
 
 	updateTask() {
 		if (this.currentText.length > 0) {
-			this.props.dispatch(updateTaskList(this.currentTitle, this.currentText, this.updateIndex));
+			this.props.dispatch(updateTaskList(
+				this.currentTitle.length<1
+					?this.currentText.slice(0,20)
+					:this.currentTitle,
+				this.currentText, this.currentText, this.updateIndex));
 		}
 		else {
 			alert('please fill the Note field');
 		}
 	}
+	cancelUpdateTask() {
+		this.props.dispatch(cancelAction());
+		ReactDOM.findDOMNode(this.refs.title).value = '';
+		ReactDOM.findDOMNode(this.refs.text).value = '';
+	}
 	addTask(event) {
 		if (this.props.ll.btn === 'Create New Task') {
 			if (this.currentText.length > 0) {
-				this.props.dispatch(addToDo(this.currentTitle.length<1?this.currentText.slice(0,20):this.currentTitle, this.currentText));
+				this.props.dispatch(addToDo(
+					this.currentTitle.length<1
+						?this.currentText.slice(0,20)
+						:this.currentTitle,
+					this.currentText));
 			}
 			else {
 				alert('please fill the Note field');
@@ -60,6 +78,7 @@ export class App extends Component {
 			this.updateTask();
 		}
 
+
 		// for emptying the value in input text
 		ReactDOM.findDOMNode(this.refs.title).value = '';
 		ReactDOM.findDOMNode(this.refs.text).value = '';
@@ -67,22 +86,25 @@ export class App extends Component {
 		this.currentTitle = '';
 	}
 	render() {
-
-		console.log('BUTTON',this.props.ll.btn);
-		return (<div className="jumbotron">
+		return (<div className='jumbotron'>
 			<div className='container'>
 				<div className='row'>
-					{console.log('PAY ATTANTION',this.props.ll.tasks )}
+					{console.log('TASK STATUS',this.props.ll.tasks )}
 					<div className='col-md-3'>
 						{
 							this.props.ll.tasks.map((data, index) => {
 								var kk = Object.keys(data);
 								return (<div key={index}>
-									<ListGroup className="row">
-										<Button className="col-md-11" key={index} onClick={this.displayTask.bind(this, data[kk[0]], kk[0])}>
+									<ListGroup className='row'>
+										<Button
+											className='col-md-10' key={index}
+											onClick={this.displayTask.bind(this, data[kk[0]], kk[0])}>
 											Note: {kk}
 										</Button>
-										<Button className="col-md-1" bsStyle="danger" bsSize="small" onClick={this.deleteTask.bind(this, index, data[kk[0]], kk[0])}>X</Button>
+										<Button className='col-md-2' bsStyle='danger'
+											onClick={
+												this.deleteTask.bind(
+													this, index, data[kk[0]], kk[0])}>x</Button>
 									</ListGroup>
 								</div>);
 							})
@@ -91,23 +113,42 @@ export class App extends Component {
 					<div className='col-md-9'>
 						<div className='row'>
 							<div className='col-md-4'>
-								<FormGroup controlId="formControlsTextarea">
+								<FormGroup controlId='formControlsTextarea'>
 									<ControlLabel>Title</ControlLabel>
-									<FormControl componentClass="textarea" placeholder="This field is optional..." ref='title' maxLength="20" onChange={(event) => {
-										this.currentTitle = event.target.value;
-									}}/>
+									<FormControl componentClass='textarea'
+										placeholder='This field is optional...'
+										ref='title' maxLength='20' onChange={(event) => {
+											this.currentTitle = event.target.value;
+										}}/>
 								</FormGroup>
 							</div>
 							<div className='col-md-8'>
-								<FormGroup controlId="formControlsTextarea">
+								<FormGroup controlId='formControlsTextarea'>
 									<ControlLabel>Notes</ControlLabel>
-									<FormControl componentClass="textarea" placeholder="Write your notes here..." ref='text' onChange={(event) => {
-										this.currentText = event.target.value;
-									}}/>
+									<FormControl componentClass='textarea'
+										placeholder='Write your notes here...'
+										ref='text' onChange={(event) => {
+											this.currentText = event.target.value;
+										}}/>
 								</FormGroup>
 							</div>
 						</div>
-						<Button bsStyle="primary" className="button" onClick={this.addTask.bind(this)}>{this.props.ll.btn.length<1?'Create New Task':this.props.ll.btn}</Button>
+						<div className='row'>
+							<div className='col-md-2'>
+								<Button bsStyle='success' className='button'
+									onClick={this.addTask.bind(this)}>{
+										this.props.ll.btn.length<1
+											?'Create New Task'
+											:this.props.ll.btn}</Button>
+							</div>
+							{(() => {
+								if (this.props.ll.btn === 'Update Task') {
+									return (<div className='col-md-2'>
+										<Button bsStyle='danger' className='button' onClick={this.cancelUpdateTask.bind(this)}>Cancel</Button>
+									</div>);
+								}
+							})()}
+						</div>
 					</div>
 				</div>
 			</div>

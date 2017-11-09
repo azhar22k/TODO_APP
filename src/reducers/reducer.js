@@ -43,6 +43,12 @@ const updateList = (state = {tasks:[],title:'', text:'', btn:'Create New Task'},
 			tasks:xx
 		};
 		break;
+	case 'CANCEL_ACTION':
+		state = {
+			...state,
+			btn:'Create New Task'
+		};
+		break;
 	default:
 		break;
 	}

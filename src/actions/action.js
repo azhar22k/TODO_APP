@@ -27,3 +27,9 @@ export function updateTaskList(title, text, index) {
 		index: index
 	};
 }
+
+export function cancelAction(){
+	return {
+		type: 'CANCEL_ACTION'
+	};
+}
