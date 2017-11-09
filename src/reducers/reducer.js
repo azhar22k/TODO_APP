@@ -1,11 +1,10 @@
 import {combineReducers} from 'redux';
 
-const updateList = (state = {tasks:[],title:'', text:''}, action) => {
+const updateList = (state = {tasks:[],title:'', text:'', btn:'Create New Task'}, action) => {
 	switch (action.type) {
 	case 'UPDATE_LIST':
 		var obj = {};
 		obj[action.title] = action.text;
-		//console.log(obj);
 		var arr = [];
 		arr.push(obj);
 
@@ -22,6 +21,7 @@ const updateList = (state = {tasks:[],title:'', text:''}, action) => {
 
 		state = {
 			...state,
+			btn:'Create New Task',
 			tasks:xx
 		};
 		break;
