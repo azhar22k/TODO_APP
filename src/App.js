@@ -67,6 +67,8 @@ export class App extends Component {
 		this.currentTitle = '';
 	}
 	render() {
+
+		console.log('BUTTON',this.props.ll.btn);
 		return (<div className="jumbotron">
 			<div className='container'>
 				<div className='row'>
@@ -105,7 +107,7 @@ export class App extends Component {
 								</FormGroup>
 							</div>
 						</div>
-						<Button bsStyle="primary" className="button" onClick={this.addTask.bind(this)}>{this.props.ll.btn}</Button>
+						<Button bsStyle="primary" className="button" onClick={this.addTask.bind(this)}>{this.props.ll.btn.length<1?'Create New Task':this.props.ll.btn}</Button>
 					</div>
 				</div>
 			</div>
