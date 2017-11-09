@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
-import {addToDo, deleteTaskList} from './actions/action';
+import {addToDo, deleteTaskList, updateButtonName, updateTaskList} from './actions/action';
 import ReactDOM from 'react-dom';
 import {
 	Button,
@@ -17,29 +17,51 @@ export class App extends Component {
 		super(props);
 		this.currentText = '';
 		this.currentTitle = '';
+		this.updateIndex = 0;
 	}
 
-	deleteTask(index, txt) {
+	deleteTask(index, txt, title) {
 
 		this.props.dispatch(deleteTaskList(index));
 
-		if (ReactDOM.findDOMNode(this.refs.text).value === txt) {
+		if (ReactDOM.findDOMNode(this.refs.title).value === title) {
+			ReactDOM.findDOMNode(this.refs.title).value = '';
 			ReactDOM.findDOMNode(this.refs.text).value = '';
 		}
 	}
 
-	displayTask(txt) {
+	displayTask(txt, title, index) {
+		ReactDOM.findDOMNode(this.refs.title).value = title;
 		ReactDOM.findDOMNode(this.refs.text).value = txt;
+		this.currentText = txt;
+		this.currentTitle = title;
+		this.updateIndex = index;
+		this.props.dispatch(updateButtonName());
 	}
 
-	addTask(event) {
+	updateTask() {
 		if (this.currentText.length > 0) {
-			this.props.dispatch(addToDo(this.currentText));
-		} else {
-			alert('please fill the task field');
+			this.props.dispatch(updateTaskList(this.currentTitle, this.currentText, this.updateIndex));
+		}
+		else {
+			alert('please fill the Note field');
+		}
+	}
+	addTask(event) {
+		if (this.props.ll.btn === 'Create New Task') {
+			if (this.currentText.length > 0) {
+				this.props.dispatch(addToDo(this.currentTitle.length<1?this.currentText.slice(0,20):this.currentTitle, this.currentText));
+			}
+			else {
+				alert('please fill the Note field');
+			}
+		}
+		else {
+			this.updateTask();
 		}
 
 		// for emptying the value in input text
+		ReactDOM.findDOMNode(this.refs.title).value = '';
 		ReactDOM.findDOMNode(this.refs.text).value = '';
 		this.currentText = '';
 		this.currentTitle = '';
@@ -49,14 +71,14 @@ export class App extends Component {
 			<div className='container'>
 				<div className='row'>
 					{console.log('PAY ATTANTION',this.props.ll.tasks )}
-					<div className='col-md-4'>
+					<div className='col-md-3'>
 						{
 							this.props.ll.tasks.map((data, index) => {
 								var kk = Object.keys(data);
 								return (<div key={index}>
 									<ListGroup className="row">
 										<Button className="col-md-11" key={index} onClick={this.displayTask.bind(this, data[kk[0]], kk[0])}>
-											{kk}
+											Note: {kk}
 										</Button>
 										<Button className="col-md-1" bsStyle="danger" bsSize="small" onClick={this.deleteTask.bind(this, index, data[kk[0]], kk[0])}>X</Button>
 									</ListGroup>
@@ -64,16 +86,26 @@ export class App extends Component {
 							})
 						}
 					</div>
-					<div className='col-md-8'>
-						<div>
-							<FormGroup controlId="formControlsTextarea">
-								<ControlLabel>Notes</ControlLabel>
-								<FormControl componentClass="textarea" placeholder="Write your notes here..." ref='text' onChange={(event) => {
-									this.currentText = event.target.value;
-								}}/>
-							</FormGroup>
+					<div className='col-md-9'>
+						<div className='row'>
+							<div className='col-md-4'>
+								<FormGroup controlId="formControlsTextarea">
+									<ControlLabel>Title</ControlLabel>
+									<FormControl componentClass="textarea" placeholder="This field is optional..." ref='title' maxLength="20" onChange={(event) => {
+										this.currentTitle = event.target.value;
+									}}/>
+								</FormGroup>
+							</div>
+							<div className='col-md-8'>
+								<FormGroup controlId="formControlsTextarea">
+									<ControlLabel>Notes</ControlLabel>
+									<FormControl componentClass="textarea" placeholder="Write your notes here..." ref='text' onChange={(event) => {
+										this.currentText = event.target.value;
+									}}/>
+								</FormGroup>
+							</div>
 						</div>
-						<Button bsStyle="primary" className="button" onClick={this.addTask.bind(this)}>Add Task</Button>
+						<Button bsStyle="primary" className="button" onClick={this.addTask.bind(this)}>{this.props.ll.btn}</Button>
 					</div>
 				</div>
 			</div>

@@ -1,10 +1,7 @@
-let nextTodoId = 1;
-
-export function addToDo(title = nextTodoId, text) {
-	++nextTodoId;
+export function addToDo(title, text) {
 	return {
 		type: 'UPDATE_LIST',
-		title: 'Note: '+title,
+		title: title,
 		text: text
 	};
 }
@@ -22,11 +19,10 @@ export function updateButtonName() {
 	};
 }
 
-export function updateTaskList(title = nextTodoId, text, index) {
-	++nextTodoId;
+export function updateTaskList(title, text, index) {
 	return {
 		type: 'UPDATE_TASK',
-		title: 'Note: '+title,
+		title: title,
 		text: text,
 		index: index
 	};
